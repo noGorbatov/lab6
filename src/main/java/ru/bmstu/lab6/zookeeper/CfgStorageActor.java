@@ -1,6 +1,7 @@
 package ru.bmstu.lab6.zookeeper;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class CfgStorageActor extends AbstractActor {
     }
     public static class GetRandomServerMsg {}
     public static class ResRandomServerMsg {
-        private String server;
+        private final String server;
         public ResRandomServerMsg(String server) {
             this.server = server;
         }
@@ -32,8 +33,8 @@ public class CfgStorageActor extends AbstractActor {
                     servers = msg.servers;
                 })
                 .match(GetRandomServerMsg.class, msg -> {
-                    int i = ThreadLocalRandom.current().nextInt(0, servers.size() - 1);
-                    getSender().tell(new ResRandomServerMsg());
+                    int i = ThreadLocalRandom.current().nextInt(0, servers.size());
+                    getSender().tell(new ResRandomServerMsg(servers.get(i)), ActorRef.noSender());
                 })
                 .build();
     }
