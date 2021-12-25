@@ -1,5 +1,6 @@
 package ru.bmstu.lab6.zookeeper;
 
+import akka.NotUsed;
 import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -79,7 +80,7 @@ public class HttpServer extends AllDirectives {
         ActorMaterializer materializer = ActorMaterializer.create(system);
         Http http = Http.get(system);
         HttpServer server = new HttpServer(HOST, port, system);
-        Flow<Http>
+        Flow<HttpRequest, HttpResponse, NotUsed>
 
     }
 }
