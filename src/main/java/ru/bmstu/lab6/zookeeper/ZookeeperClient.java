@@ -20,6 +20,6 @@ public class ZookeeperClient {
             System.out.println("event fired " + event);
         });
         client.create(BASE_NODE_PATH + "/s",
-                      port.)
+                      )
     }
 }
