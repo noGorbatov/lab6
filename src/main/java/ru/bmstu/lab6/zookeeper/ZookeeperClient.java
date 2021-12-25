@@ -29,7 +29,7 @@ public class ZookeeperClient implements Watcher {
                       CreateMode.EPHEMERAL_SEQUENTIAL);
     }
 
-    private void process(Watcher.Event event) throws InterruptedException, KeeperException {
+    public void process(Watcher.Event event) throws InterruptedException, KeeperException {
         System.out.println("event fired " + event);
 
         List<String> children = client.getChildren(BASE_NODE_PATH, true);
