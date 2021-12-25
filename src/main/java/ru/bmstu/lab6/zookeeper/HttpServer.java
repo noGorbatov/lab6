@@ -39,7 +39,7 @@ public class HttpServer extends AllDirectives {
                         return completeWithFuture(PatternsCS.ask(storageActor,
                                     new CfgStorageActor.GetRandomServerMsg(),
                                     ACTOR_TIMEOUT_MS).thenCompose( resp -> {
-                                        
+                            CfgStorageActor.ResRandomServerMsg res = ResRandomServerMsg
                         })
                     })
                 }))
