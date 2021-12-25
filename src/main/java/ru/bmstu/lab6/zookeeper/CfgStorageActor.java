@@ -5,7 +5,7 @@ import akka.japi.pf.ReceiveBuilder;
 
 import java.util.ArrayList;
 
-public class CfgStorageActor implements AbstractActor {
+public class CfgStorageActor extends AbstractActor {
 
     public static class StorePortsMsg {
         private final ArrayList<Integer> ports;
@@ -14,9 +14,9 @@ public class CfgStorageActor implements AbstractActor {
         }
     }
 
-    public static class GetPortsMsg {
+    public static class GetPortMsg {
         private final ArrayList<Integer> ports;
-        public GetPortsMsg(ArrayList<Integer> ports) {
+        public GetPortMsg(ArrayList<Integer> ports) {
             this.ports = ports;
         }
         public ArrayList<Integer> getPorts() {
@@ -26,7 +26,7 @@ public class CfgStorageActor implements AbstractActor {
 
     @Override
     public Receive createReceive() {
-        ReceiveBuilder.create()
+        return ReceiveBuilder.create()
                 .match(StorePortsMsg.class, msg -> {
 
                 })
