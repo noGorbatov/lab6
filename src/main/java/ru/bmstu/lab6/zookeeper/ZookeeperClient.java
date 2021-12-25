@@ -31,7 +31,8 @@ public class ZookeeperClient {
     private void updateServers(Watcher.Event event) throws InterruptedException, KeeperException {
         List<String> children = client.getChildren(BASE_NODE_PATH, true);
         for (String child: children) {
-            byte[] bytes = client.getData()
+            byte[] bytes = client.getData(BASE_NODE_PATH + "/" + child, true, null);
+            String url = bytes.toString();
         }
     }
 }
