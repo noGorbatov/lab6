@@ -30,21 +30,22 @@ public class ZookeeperClient implements Watcher {
     }
 
     @Override
-    public void process(Watcher.Event event) {
+    public void process(WatchedEvent event) {
         System.out.println("event fired " + event);
 
-        List<String> children = client.getChildren(BASE_NODE_PATH, true);
+        List<String> children;
         ArrayList<String> newServers = new ArrayList<>();
+        try {
+            children = client.getChildren(BASE_NODE_PATH, true);
         for (String child: children) {
             byte[] bytes = client.getData(BASE_NODE_PATH + "/" + child, true, null);
             String server = new String(bytes, StandardCharsets.UTF_8);
             newServers.add(server);
         }
+        } catch (KeeperException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
         storageActor.tell(new CfgStorageActor.StoreServerMsg(newServers), ActorRef.noSender());
-    }
-
-    @Override
-    public void process(WatchedEvent watchedEvent) {
-
     }
 }
