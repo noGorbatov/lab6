@@ -59,6 +59,7 @@ public class HttpServer extends AllDirectives {
                             CfgStorageActor.ResRandomServerMsg res =
                                     (CfgStorageActor.ResRandomServerMsg) resp;
                             String server = res.getServer();
+                            System.out.println("request for " + server);
                             String reqUrl = createUrl(server, url, count - 1);
                             return fetch(reqUrl);
                         }));
