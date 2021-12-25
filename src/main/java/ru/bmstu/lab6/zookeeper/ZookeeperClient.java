@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZookeeperClient {
+public class ZookeeperClient implements Watcher {
     private static final String SERVER_ADDR = "localhost:2181";
     private static final int SESSION_TIMEOUT_MS = 5000;
     private static final String BASE_NODE_PATH = "/servers";
@@ -22,14 +22,14 @@ public class ZookeeperClient {
         this.host = host;
         this.port = port;
         this.storageActor = storageActor;
-        client = new ZooKeeper(SERVER_ADDR, SESSION_TIMEOUT_MS, this::updateServers)
-        });
+        client = new ZooKeeper(SERVER_ADDR, SESSION_TIMEOUT_MS, this);
         client.create(BASE_NODE_PATH + "/s",
                       (host + port).getBytes(),
                       ZooDefs.Ids.OPEN_ACL_UNSAFE,
                       CreateMode.EPHEMERAL_SEQUENTIAL);
     }
-    private void updateServers(Watcher.Event event) throws InterruptedException, KeeperException {
+
+    private void process(Watcher.Event event) throws InterruptedException, KeeperException {
         System.out.println("event fired " + event);
 
         List<String> children = client.getChildren(BASE_NODE_PATH, true);
@@ -40,5 +40,10 @@ public class ZookeeperClient {
             newServers.add(server);
         }
         storageActor.tell(new CfgStorageActor.StoreServerMsg(newServers), ActorRef.noSender());
+    }
+
+    @Override
+    public void process(WatchedEvent watchedEvent) {
+
     }
 }
