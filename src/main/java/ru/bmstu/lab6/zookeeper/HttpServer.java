@@ -27,6 +27,10 @@ public class HttpServer extends AllDirectives {
         return http.singleRequest(HttpRequest.create(url));
     }
 
+    private String createUrl(String server, String testUrl, int count) {
+        
+    }
+
     public Route createRoute() {
         return concat(
                 get( () -> parameter(URL_PARAM, url -> {
@@ -39,7 +43,10 @@ public class HttpServer extends AllDirectives {
                         return completeWithFuture(PatternsCS.ask(storageActor,
                                     new CfgStorageActor.GetRandomServerMsg(),
                                     ACTOR_TIMEOUT_MS).thenCompose( resp -> {
-                            CfgStorageActor.ResRandomServerMsg res = ResRandomServerMsg
+                            CfgStorageActor.ResRandomServerMsg res =
+                                    (CfgStorageActor.ResRandomServerMsg) resp;
+                            String server = res.getServer();
+
                         })
                     })
                 }))
