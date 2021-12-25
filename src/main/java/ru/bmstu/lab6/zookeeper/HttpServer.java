@@ -6,8 +6,11 @@ import akka.actor.Props;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
+import akka.http.javadsl.model.Query;
+import akka.http.javadsl.model.Uri;
 import akka.http.javadsl.server.AllDirectives;
 import akka.http.javadsl.server.Route;
+import akka.japi.Pair;
 import akka.pattern.Patterns;
 import akka.pattern.PatternsCS;
 
@@ -27,13 +30,15 @@ public class HttpServer extends AllDirectives {
         return http.singleRequest(HttpRequest.create(url));
     }
 
-    private String createUrl(String server, String testUrl, int count) {
-        
+    private String createUrl(String server, String testUrl, Integer count) {
+        return Uri.create(server).
+                query(Query.create(new Pair<>(URL_PARAM, testUrl),
+                                   new Pair<>(COUNT_PARAM, count.toString()))).toString();
     }
 
     public Route createRoute() {
         return concat(
-                get( () -> parameter(URL_PARAM, url -> {
+                get( () -> parameter(URL_PARAM, url ->
                     parameter(COUNT_PARAM, countString -> {
                         int count = Integer.parseInt(countString);
                         if (count == 0) {
@@ -46,11 +51,12 @@ public class HttpServer extends AllDirectives {
                             CfgStorageActor.ResRandomServerMsg res =
                                     (CfgStorageActor.ResRandomServerMsg) resp;
                             String server = res.getServer();
-
-                        })
+                            String reqUrl = createUrl(server, url, count - 1);
+                            return fetch(reqUrl);
+                        }));
                     })
-                }))
-        )
+                ))
+        );
     }
 
     public HttpServer(String host, int port, ActorSystem system) {
