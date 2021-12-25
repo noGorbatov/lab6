@@ -14,15 +14,7 @@ public class CfgStorageActor extends AbstractActor {
         }
     }
 
-    public static class GetPortRandomMsg {
-        private final int port;
-        public GetPortRandomMsg(int port) {
-            this.port = port;
-        }
-        public int getPorts() {
-            return port;
-        }
-    }
+    public static class GetPortRandomMsg {}
 
     @Override
     public Receive createReceive() {
