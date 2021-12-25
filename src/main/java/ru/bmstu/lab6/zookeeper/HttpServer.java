@@ -1,7 +1,6 @@
 package ru.bmstu.lab6.zookeeper;
 
 import akka.NotUsed;
-import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
