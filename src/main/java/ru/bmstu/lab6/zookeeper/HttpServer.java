@@ -1,5 +1,6 @@
 package ru.bmstu.lab6.zookeeper;
 
+import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
@@ -12,7 +13,11 @@ import akka.http.javadsl.server.AllDirectives;
 import akka.http.javadsl.server.Route;
 import akka.japi.Pair;
 import akka.pattern.PatternsCS;
+import akka.stream.ActorMaterializer;
+import akka.stream.javadsl.Flow;
+import org.apache.zookeeper.KeeperException;
 
+import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 
 public class HttpServer extends AllDirectives {
@@ -25,6 +30,7 @@ public class HttpServer extends AllDirectives {
     private final String host;
     private final int port;
     private final ActorRef storageActor;
+    private final ZookeeperClient client;
 
     private CompletionStage<HttpResponse> fetch(String url) {
         return http.singleRequest(HttpRequest.create(url));
@@ -59,16 +65,21 @@ public class HttpServer extends AllDirectives {
         );
     }
 
-    public HttpServer(String host, int port, ActorSystem system) {
+    public HttpServer(String host, int port, ActorSystem system) throws IOException, InterruptedException, KeeperException {
         this.host = host;
         this.port = port;
         http = Http.get(system);
         storageActor = system.actorOf(Props.create(CfgStorageActor.class));
+        client = new ZookeeperClient(host, port, storageActor);
     }
 
     public static void main(String[] args) {
         int port = Integer.parseInt(args[0]);
-
+        ActorSystem system = ActorSystem.create();
+        ActorMaterializer materializer = ActorMaterializer.create(system);
+        Http http = Http.get(system);
+        HttpServer server = new HttpServer(HOST, port, system);
+        Flow<Http>
 
     }
 }
