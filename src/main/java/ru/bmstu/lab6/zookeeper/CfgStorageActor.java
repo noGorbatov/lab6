@@ -4,6 +4,7 @@ import akka.actor.AbstractActor;
 import akka.japi.pf.ReceiveBuilder;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CfgStorageActor extends AbstractActor {
     private ArrayList<String> servers;
@@ -31,7 +32,7 @@ public class CfgStorageActor extends AbstractActor {
                     servers = msg.servers;
                 })
                 .match(GetRandomServerMsg.class, msg -> {
-                    int i = 
+                    int i = ThreadLocalRandom.current().nextInt(0, servers.size() - 1);
                     getSender().tell(new ResRandomServerMsg());
                 })
                 .build();
