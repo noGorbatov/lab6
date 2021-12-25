@@ -14,13 +14,13 @@ public class CfgStorageActor extends AbstractActor {
         }
     }
 
-    public static class GetPortMsg {
-        private final ArrayList<Integer> ports;
-        public GetPortMsg(ArrayList<Integer> ports) {
-            this.ports = ports;
+    public static class GetPortRandomMsg {
+        private final int port;
+        public GetPortRandomMsg(int port) {
+            this.port = port;
         }
-        public ArrayList<Integer> getPorts() {
-            return ports;
+        public int getPorts() {
+            return port;
         }
     }
 
