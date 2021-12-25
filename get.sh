@@ -1,0 +1,1 @@
+curl "http://localhost:8080/?url=http://$1&count=$2"
