@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import org.apache.zookeeper.*;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ZookeeperClient {
     private static final String SERVER_ADDR = "localhost:2181";
@@ -27,7 +28,10 @@ public class ZookeeperClient {
                       ZooDefs.Ids.OPEN_ACL_UNSAFE,
                       CreateMode.EPHEMERAL_SEQUENTIAL);
     }
-    private void updateServers(Watcher.Event event) {
-        
+    private void updateServers(Watcher.Event event) throws InterruptedException, KeeperException {
+        List<String> children = client.getChildren(BASE_NODE_PATH, true);
+        for (String child: children) {
+            
+        }
     }
 }
