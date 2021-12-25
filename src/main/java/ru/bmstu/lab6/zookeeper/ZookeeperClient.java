@@ -13,13 +13,14 @@ public class ZookeeperClient {
     private String host;
     private int port;
     private ZooKeeper client;
-    public ZookeeperClient(String host, int port, ActorRef storageActor) throws IOException {
+    public ZookeeperClient(String host, Integer port, ActorRef storageActor) throws IOException {
         this.host = host;
         this.port = port;
         client = new ZooKeeper(SERVER_ADDR, SESSION_TIMEOUT_MS, event -> {
             System.out.println("event fired " + event);
         });
         client.create(BASE_NODE_PATH + "/s",
+                      port.toString().getBytes(),
                       )
     }
 }
