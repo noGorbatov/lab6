@@ -15,7 +15,13 @@ public class CfgStorageActor extends AbstractActor {
     }
     public static class GetRandomServerMsg {}
     public static class ResRandomServerMsg {
-        
+        private String server;
+        public ResRandomServerMsg(String server) {
+            this.server = server;
+        }
+        public String getServer() {
+            return server;
+        }
     }
 
     @Override
@@ -25,7 +31,8 @@ public class CfgStorageActor extends AbstractActor {
                     servers = msg.servers;
                 })
                 .match(GetRandomServerMsg.class, msg -> {
-                    getSender().tell();
+                    String server = 
+                    getSender().tell(new ResRandomServerMsg());
                 })
                 .build();
     }
