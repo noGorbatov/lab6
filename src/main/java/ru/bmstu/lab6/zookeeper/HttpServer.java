@@ -9,11 +9,15 @@ public class HttpServer extends AllDirectives {
     public Route createRoute() {
         return concat(
                 get( () -> parameter(URL_PARAM, url -> {
-                    parameter(COUNT_PARAM, count -> {
-
-                })
-                    )
-    })
+                    parameter(COUNT_PARAM, countString -> {
+                        int count = Integer.parseInt(countString);
+                        if (count == 0) {
+                            
+                        }
+                    })
+                }))
+        )
+    }
 
     public static void main(String[] args) {
         int port = Integer.parseInt(args[0]);
