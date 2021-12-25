@@ -24,7 +24,7 @@ public class ZookeeperClient implements Watcher {
         this.storageActor = storageActor;
         client = new ZooKeeper(SERVER_ADDR, SESSION_TIMEOUT_MS, this);
         client.create(BASE_NODE_PATH + "/s",
-                      (host + port).getBytes(),
+                      (host + ":" + port).getBytes(),
                       ZooDefs.Ids.OPEN_ACL_UNSAFE,
                       CreateMode.EPHEMERAL_SEQUENTIAL);
     }
