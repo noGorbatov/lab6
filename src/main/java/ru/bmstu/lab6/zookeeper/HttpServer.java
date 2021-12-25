@@ -4,7 +4,7 @@ import akka.http.javadsl.server.AllDirectives;
 import akka.http.javadsl.server.Route;
 
 public class HttpServer extends AllDirectives {
-
+    private static final  
     public Route createRoute() {
         return concat(
                 get( () -> parameter())
