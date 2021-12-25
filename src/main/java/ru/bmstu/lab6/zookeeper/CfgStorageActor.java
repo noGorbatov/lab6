@@ -6,21 +6,26 @@ import akka.japi.pf.ReceiveBuilder;
 import java.util.ArrayList;
 
 public class CfgStorageActor extends AbstractActor {
-
-    public static class StorePortsMsg {
-        private final ArrayList<Integer> ports;
-        public StorePortsMsg(ArrayList<Integer> ports) {
-            this.ports = ports;
+    private ArrayList<String> servers;
+    public static class StoreServerMsg {
+        private final ArrayList<String> servers;
+        public StoreServerMsg(ArrayList<String> servers) {
+            this.servers = servers;
         }
     }
-
-    public static class GetPortRandomMsg {}
+    public static class GetRandomServerMsg {}
+    public static class ResRandomServerMsg {
+        
+    }
 
     @Override
     public Receive createReceive() {
         return ReceiveBuilder.create()
-                .match(StorePortsMsg.class, msg -> {
-
+                .match(StoreServerMsg.class, msg -> {
+                    servers = msg.servers;
+                })
+                .match(GetRandomServerMsg.class, msg -> {
+                    getSender().tell();
                 })
                 .build();
     }
