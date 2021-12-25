@@ -1,10 +1,7 @@
 package ru.bmstu.lab6.zookeeper;
 
 import akka.actor.ActorRef;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.ZooDefs;
-import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.*;
 
 import java.io.IOException;
 
@@ -30,5 +27,7 @@ public class ZookeeperClient {
                       ZooDefs.Ids.OPEN_ACL_UNSAFE,
                       CreateMode.EPHEMERAL_SEQUENTIAL);
     }
-    private void update()
+    private void updateServers(Watcher.Event event) {
+        
+    }
 }
