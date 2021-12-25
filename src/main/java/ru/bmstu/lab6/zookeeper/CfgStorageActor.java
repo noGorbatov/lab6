@@ -7,15 +7,29 @@ import java.util.ArrayList;
 
 public class CfgStorageActor implements AbstractActor {
 
-    public static class StoreMsg {
+    public static class StorePortsMsg {
         private final ArrayList<Integer> ports;
-        public StoreMsg
+        public StorePortsMsg(ArrayList<Integer> ports) {
+            this.ports = ports;
+        }
+    }
+
+    public static class GetPortsMsg {
+        private final ArrayList<Integer> ports;
+        public GetPortsMsg(ArrayList<Integer> ports) {
+            this.ports = ports;
+        }
+        public ArrayList<Integer> getPorts() {
+            return ports;
+        }
     }
 
     @Override
     public Receive createReceive() {
         ReceiveBuilder.create()
-                .match()
+                .match(StorePortsMsg.class, msg -> {
+
+                })
                 .build();
     }
 }
