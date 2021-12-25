@@ -1,1 +1,1 @@
-mvn exec:java -Dexec.mainClass="ru.bmstu.lab6.zookeeper" -Dexec.args="$1"
+mvn exec:java -Dexec.mainClass="ru.bmstu.lab6.zookeeper.HttpServer" -Dexec.args="$1"
