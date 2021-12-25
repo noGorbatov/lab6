@@ -5,7 +5,9 @@ import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
+import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
 import akka.http.javadsl.model.Query;
@@ -74,13 +76,23 @@ public class HttpServer extends AllDirectives {
         client = new ZookeeperClient(host, port, storageActor);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
         int port = Integer.parseInt(args[0]);
         ActorSystem system = ActorSystem.create();
         ActorMaterializer materializer = ActorMaterializer.create(system);
         Http http = Http.get(system);
         HttpServer server = new HttpServer(HOST, port, system);
-        Flow<HttpRequest, HttpResponse, NotUsed>
+        Flow<HttpRequest, HttpResponse, NotUsed> flow = server.createRoute().flow(system, materializer);
 
+        CompletionStage<ServerBinding> binding = http.bindAndHandle(
+                flow,
+                ConnectHttp.toHost(HOST, port),
+                materializer
+        );
+
+        System.in.read();
+
+        binding.thenCompose(ServerBinding::unbind)
+                .thenAccept(unbound -> system.terminate());
     }
 }
