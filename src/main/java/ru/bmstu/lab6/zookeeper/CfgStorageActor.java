@@ -31,7 +31,7 @@ public class CfgStorageActor extends AbstractActor {
                     servers = msg.servers;
                 })
                 .match(GetRandomServerMsg.class, msg -> {
-                    String server = 
+                    int i
                     getSender().tell(new ResRandomServerMsg());
                 })
                 .build();
