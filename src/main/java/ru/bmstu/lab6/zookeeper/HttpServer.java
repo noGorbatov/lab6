@@ -1,6 +1,8 @@
 package ru.bmstu.lab6.zookeeper;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.server.AllDirectives;
 import akka.http.javadsl.server.Route;
@@ -12,6 +14,7 @@ public class HttpServer extends AllDirectives {
     private final Http http;
     private final String host;
     private final int port;
+    private final ActorRef storageActor;
 
     public Route createRoute() {
         return concat(
@@ -26,10 +29,11 @@ public class HttpServer extends AllDirectives {
         )
     }
 
-    public HttpServer(String host, int port) {
-        this.http = host;
+    public HttpServer(String host, int port, ActorSystem system) {
+        this.host = host;
         this.port = port;
-        http = Http.get(context)
+        http = Http.get(system);
+        storageActor = system.actorOf(Props.create(CfgStorageActor.class));
     }
 
     public static void main(String[] args) {
